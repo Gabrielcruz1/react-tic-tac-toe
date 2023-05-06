@@ -14,18 +14,35 @@ function Square({ value, onSquareClick }) {
 
 
 export default function Board() {
+    //Taking turns state 
+    const [xIsNext, setXIsNext] = useState(true)
     //creates an array with 9 el and sets them to null. 
     const [squares, setSquares] = useState(Array(9).fill(null));
 
+    //Update squares array holding board state 
     function handleClick(i){
+        //if square already filled return 
+        if(squares[i]){
+            return
+        }
+        //creates copy of array with slice 
         const nextSquares = squares.slice();
-         nextSquares[i] = "X";
+        //Updates clicked square with X, O if false 
+        if(xIsNext){
+            nextSquares[i] = "X";
+        } else {
+            nextSquares[i] = "O";
+        }
+         //calling setSquares func triggers re-render of components that use squares state 
          setSquares(nextSquares)
+         //Changes true boolean state to false allows for turn taking 
+         setXIsNext(!xIsNext)
     }
 
     return (
         <>
             <div className="board-row">
+                {/* When square is clicked the code after => will run */}
                 <Square value={squares[0]} onSquareClick={() => handleClick(0)}/>
                 <Square value={squares[1]} onSquareClick={() => handleClick(1)}/>
                 <Square value={squares[2]} onSquareClick={() => handleClick(2)}/>
